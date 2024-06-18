@@ -67,7 +67,7 @@ typedef int8_t (*YX5300_Platform_InitDeinit_t)(void);
  *         -  0: The operation was successful.
  *         - -1: The operation failed. 
  */
-typedef int8_t (*YX5300_Platform_Delay_t)(uint8_t Delay);
+typedef int8_t (*YX5300_Platform_Delay_t)(uint16_t Delay);
 
 /**
  * @brief  Function type for Send data through UART.
@@ -189,7 +189,105 @@ YX5300_DeInit(YX5300_Handler_t *Handler);
  ==================================================================================
  */
 
+/**
+ * @brief  Play next track
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_PlayNext(YX5300_Handler_t *Handler);
 
+
+/**
+ * @brief  Play previous track
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_PlayPrev(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Increase volume one step
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_VolumeUp(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Decrease volume one step
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_VolumeDown(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Set volume level
+ * @param  Handler: Pointer to handler
+ * @param  Volume: Volume level (0-30)
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_SetVolume(YX5300_Handler_t *Handler, uint8_t Volume);
+
+
+/**
+ * @brief  Play track by index
+ * @param  Handler: Pointer to handler
+ * @param  Track: Track number
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_PlayTrack(YX5300_Handler_t *Handler, uint16_t Track);
+
+
+/**
+ * @brief  Pause playback
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_Resume(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Pause playback
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_Pause(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Stop playback
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_Stop(YX5300_Handler_t *Handler);
 
 
 
