@@ -125,6 +125,7 @@ YX5300_Init(YX5300_Handler_t *Handler)
   
   if (Handler->Platform.Init)
     Handler->Platform.Init();
+  Handler->Platform.Delay(500);
 
   if (YX5300_SendCommand(Handler, YX5300_CMD_RESET, 0, 0) != YX5300_OK)
     return YX5300_FAIL;
