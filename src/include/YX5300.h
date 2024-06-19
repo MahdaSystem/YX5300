@@ -41,6 +41,10 @@ extern "C" {
 #include <stdint.h>
 
 
+/* Exported Constants -----------------------------------------------------------*/
+#define YX5300_RESPONSE_SIZE          10
+
+
 /* Exported Data Types ----------------------------------------------------------*/
 /**
  * @brief  Library functions result data type
@@ -50,6 +54,7 @@ typedef enum YX5300_Result_e
   YX5300_OK              = 0,
   YX5300_FAIL            = 1,
   YX5300_INVALID_PARAM   = 2,
+  YX5300_RX_COMPLETE     = 3,
 } YX5300_Result_t;
 
 
@@ -113,6 +118,29 @@ typedef struct YX5300_Handler_s
 {
   // Platform dependent layer
   YX5300_Platform_t Platform;
+
+  // Rx Handler
+  struct
+  {
+    uint8_t Buffer[YX5300_RESPONSE_SIZE];
+    uint8_t BufferIndex;
+    uint8_t InFrame;
+  } Rx;
+
+  // Status
+  struct
+  {
+    uint8_t  LastCommand;
+    uint8_t  LastResponse;
+    uint16_t LastCommandData;
+    uint16_t LastResponseData;
+
+    uint8_t Volume;
+    uint16_t Track; // if 0, it means no track is playing
+    uint8_t StatusByte; // 0x00: Stop, 0x01: Play, 0x02: Pause
+
+    uint8_t MemoryInserted;
+  } Status;
 } YX5300_Handler_t;
 
 
@@ -180,6 +208,70 @@ YX5300_Init(YX5300_Handler_t *Handler);
  */
 YX5300_Result_t
 YX5300_DeInit(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Rx callback function
+ * @param  Handler: Pointer to handler
+ * @param  Data: Received data
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ *         - YX5300_RX_COMPLETE: Frame received successfully and status updated.
+ */
+YX5300_Result_t
+YX5300_Rx(YX5300_Handler_t *Handler, uint8_t Data);
+
+
+
+/**
+ ==================================================================================
+                            ##### Status Functions #####                           
+ ==================================================================================
+ */
+
+/**
+ * @brief  Update status in handler
+ * @note   After calling this function, user should wait for YX5300_RX_COMPLETE of
+ *         YX5300_Rx callback function to be called. Then user can check the
+ *         StatusByte in handler to see the current status.
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_UpdateStatus(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Update current volume level
+ * @note   After calling this function, user should wait for YX5300_RX_COMPLETE of
+ *         YX5300_Rx callback function to be called. Then user can check the
+ *         Volume in handler to see the current volume level.
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ *         - YX5300_INVALID_PARAM: Invalid parameter.
+ */
+YX5300_Result_t
+YX5300_UpdateVolume(YX5300_Handler_t *Handler);
+
+
+/**
+ * @brief  Update current track number
+ * @note   After calling this function, user should wait for YX5300_RX_COMPLETE of
+ *         YX5300_Rx callback function to be called. Then user can check the
+ *         Track in handler to see the current track number.
+ * @param  Handler: Pointer to handler
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ *         - YX5300_INVALID_PARAM: Invalid parameter.
+ */
+YX5300_Result_t
+YX5300_UpdateTrack(YX5300_Handler_t *Handler);
 
 
 
