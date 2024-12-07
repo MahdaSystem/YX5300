@@ -401,6 +401,21 @@ YX5300_PlayTrack(YX5300_Handler_t *Handler, uint16_t Track)
                             (uint8_t)(Track >> 8), (uint8_t)(Track & 0xFF));
 }
 
+/**
+ * @brief  Play track by folder and file number
+ * @param  Handler: Pointer to handler
+ * @param  Folder: Folder number
+ * @param  File: File number
+ * @retval YX5300_Result_t
+ *         - YX5300_OK: Operation was successful.
+ *         - YX5300_FAIL: Failed to send or receive data.
+ */
+YX5300_Result_t
+YX5300_PlayFolderFile(YX5300_Handler_t *Handler, uint8_t Folder, uint8_t File)
+{
+  return YX5300_SendCommand(Handler, YX5300_CMD_PLAY_FOLD_FILE, Folder, File);
+}
+
 
 /**
  * @brief  Pause playback
